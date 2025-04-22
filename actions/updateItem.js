@@ -27,7 +27,7 @@ module.exports = function updateItem (store, data, cb) {
           paths = data._updates ? data._updates.paths : Object.keys(data.AttributeUpdates || {})
 
         if (oldItem) {
-          item = deepClone(oldItem)
+          item = db.deepClone(oldItem)
           if (data.ReturnValues == 'ALL_OLD') {
             returnObj.Attributes = oldItem
           }
@@ -36,8 +36,8 @@ module.exports = function updateItem (store, data, cb) {
           }
         }
 
-        err = data._updates ? applyUpdateExpression(data._updates.sections, table, item) :
-          applyAttributeUpdates(data.AttributeUpdates, table, item)
+        err = data._updates ? db.applyUpdateExpression(data._updates.sections, table, item) :
+            db.applyAttributeUpdates(data.AttributeUpdates, table, item)
         if (err) return cb(err)
 
         if (db.itemSize(item) > store.options.maxItemSize)
